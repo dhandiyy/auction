@@ -27,5 +27,5 @@ public class Admin {
 
     @OneToOne
     @JoinColumn(name = "user_credential_id")
-    private UserCredential userCredential;
+    private User user;
 }

@@ -32,5 +32,5 @@ public class Owner {
 
     @OneToOne
     @JoinColumn(name = "user_credential_id")
-    private UserCredential userCredential;
+    private User user;
 }

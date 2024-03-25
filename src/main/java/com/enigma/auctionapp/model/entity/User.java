@@ -4,6 +4,8 @@ import com.enigma.auctionapp.constant.DbPath;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = DbPath.DB_USER_CREDENTIAL)
 @Getter
@@ -11,18 +13,17 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class UserCredential {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "username", nullable = false)
-    private String userName;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @OneToMany (mappedBy = "user", cascade = CascadeType.PERSIST)
+    private List<Role> role;
 }

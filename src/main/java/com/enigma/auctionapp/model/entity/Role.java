@@ -5,6 +5,8 @@ import com.enigma.auctionapp.util.ERole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = DbPath.DB_ROLE)
 @Getter
@@ -20,5 +22,9 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private ERole role;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

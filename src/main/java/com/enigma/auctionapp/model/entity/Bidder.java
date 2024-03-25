@@ -32,7 +32,7 @@ public class Bidder {
 
     @OneToOne
     @JoinColumn(name = "user_credential_id")
-    private UserCredential userCredential;
+    private User user;
 
     @OneToMany(mappedBy = "bidder")
     private List<Transaction> transactions;
