@@ -27,8 +27,8 @@ public class Transaction {
     private Double offerBid;
 
     @ManyToOne
-    @JoinColumn(name = "bidder_id")
-    private Bidder bidder;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "offer_id")

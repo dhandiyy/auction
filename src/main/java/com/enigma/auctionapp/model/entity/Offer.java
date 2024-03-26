@@ -43,4 +43,8 @@ public class Offer {
 
     @OneToMany(mappedBy = "offer")
     private List<Transaction> transactions;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 }

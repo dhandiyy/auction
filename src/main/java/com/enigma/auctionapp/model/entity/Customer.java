@@ -7,13 +7,13 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = DbPath.DB_BIDDER)
+@Table(name = DbPath.DB_CUSTOMER)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class Bidder {
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
@@ -34,7 +34,9 @@ public class Bidder {
     @JoinColumn(name = "user_credential_id")
     private User user;
 
-    @OneToMany(mappedBy = "bidder")
+    @OneToMany(mappedBy = "customer")
     private List<Transaction> transactions;
 
+    @OneToMany(mappedBy = "customer")
+    private List<Offer> offers;
 }

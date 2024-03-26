@@ -28,7 +28,7 @@ public class Product {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Owner owner;
+    @OneToOne
+    @JoinColumn(name = "offer_id")
+    private Offer offer;
 }

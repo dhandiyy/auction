@@ -25,5 +25,5 @@ public class User {
     private String password;
 
     @OneToMany (mappedBy = "user", cascade = CascadeType.PERSIST)
-    private List<Role> role;
+    private List<UserRole> userRoles;
 }
