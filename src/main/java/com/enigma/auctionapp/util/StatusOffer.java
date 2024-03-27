@@ -1,6 +1,6 @@
 package com.enigma.auctionapp.util;
 
-public enum StatusTransaction {
+public enum StatusOffer {
     OPEN,
     CLOSE,
     WAITING

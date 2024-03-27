@@ -1,7 +1,7 @@
 package com.enigma.auctionapp.model.entity;
 
 import com.enigma.auctionapp.constant.DbPath;
-import com.enigma.auctionapp.util.StatusTransaction;
+import com.enigma.auctionapp.util.StatusOffer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,13 +33,13 @@ public class Offer {
     @Column(name = "close_date", nullable = false)
     private LocalDateTime closeDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id")
     private Product product;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status_transaction", nullable = false)
-    private StatusTransaction statusTransaction;
+    private StatusOffer statusOffer;
 
     @OneToMany(mappedBy = "offer")
     private List<Transaction> transactions;
