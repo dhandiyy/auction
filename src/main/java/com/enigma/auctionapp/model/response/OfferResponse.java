@@ -1,10 +1,13 @@
 package com.enigma.auctionapp.model.response;
 
+import com.enigma.auctionapp.model.entity.Transaction;
 import com.enigma.auctionapp.util.StatusOffer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,5 +20,6 @@ public class OfferResponse {
     private String condition;
     private Double openBid;
     private StatusOffer statusOffer;
+    private List<TransactionResponse> transactionResponseList;
 
 }

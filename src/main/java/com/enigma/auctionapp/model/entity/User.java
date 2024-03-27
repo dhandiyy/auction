@@ -24,6 +24,6 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @OneToMany (mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany (mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<UserRole> userRoles;
 }

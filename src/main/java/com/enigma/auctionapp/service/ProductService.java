@@ -11,4 +11,5 @@ public interface ProductService {
     ProductResponse create(ProductRequest productRequest);
     Page<ProductResponse> getAll (Integer size, Integer page);
     Product getById (String id);
+    Product createEntity (Product product);
 }

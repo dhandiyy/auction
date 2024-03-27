@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+
     private final ProductRepository productRepository;
     @Override
     public ProductResponse update(ProductRequest productRequest) {
@@ -71,6 +72,12 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Product not found with id: " + id));
     }
+
+    @Override
+    public Product createEntity(Product product) {
+        return productRepository.saveAndFlush(product);
+    }
+
     private static ProductResponse getProductResponse(Product product) {
         return ProductResponse.builder()
                 .name(product.getName())
