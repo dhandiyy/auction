@@ -10,7 +10,7 @@ public interface CustomerService {
     CustomerResponse createDto (CustomerRequest customerRequest);
     Customer create (Customer customer);
     CustomerResponse getByIdDto (String id);
-    Customer getById (String id);
+    Customer getByIdEntity(String id);
     Page<CustomerResponse> getAll (Integer page, Integer size);
 
 

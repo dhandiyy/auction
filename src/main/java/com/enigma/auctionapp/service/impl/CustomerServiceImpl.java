@@ -56,7 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getById(String id) {
+    public Customer getByIdEntity(String id) {
         return customerRepository.findById(id).orElseThrow(
                 () -> new NoSuchElementException("Customer not found with id: " + id));
     }

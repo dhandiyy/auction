@@ -35,6 +35,6 @@ public class Transaction {
     private Offer offer;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "approval_status", nullable = false)
+    @Column(name = "approval_status")
     private ApprovalStatus approvalStatus;
 }

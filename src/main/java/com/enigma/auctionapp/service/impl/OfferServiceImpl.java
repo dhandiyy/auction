@@ -33,7 +33,7 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public OfferResponse create(OfferRequest offerRequest) {
 
-        Customer customer = customerService.getById(offerRequest.getIdCustomer());
+        Customer customer = customerService.getByIdEntity(offerRequest.getIdCustomer());
 
         Product product = Product.builder()
                 .name(offerRequest.getProductName())
@@ -117,5 +117,12 @@ public class OfferServiceImpl implements OfferService {
                 .statusOffer(offer.getStatusOffer())
                 .transactionResponseList(null)
                 .build();
+    }
+
+    @Override
+    public Offer getByIdEntity(String id) {
+        return offerRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Offer not found with id: " + id));
+
     }
 }
