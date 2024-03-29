@@ -1,5 +1,6 @@
 package com.enigma.auctionapp.service.impl;
 
+import com.enigma.auctionapp.model.entity.Offer;
 import com.enigma.auctionapp.model.entity.Product;
 import com.enigma.auctionapp.model.request.ProductRequest;
 import com.enigma.auctionapp.model.response.ProductResponse;
@@ -41,15 +42,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse create(ProductRequest productRequest) {
-        Product product = Product.builder()
-                .name(productRequest.getName())
-                .condition(productRequest.getCondition())
-                .actualPrice(productRequest.getActualPrice())
-                .description(productRequest.getDescription())
-                .build();
-        productRepository.save(product);
-        return getProductResponse(product);
+    public void create(Product product) {
+        productRepository.createAndFlush(product);
+    }
+
+    @Override
+    public void updateForSetOffer(Product product){
+        productRepository.updateForSetOffer(product);
     }
 
     @Override
@@ -73,13 +72,10 @@ public class ProductServiceImpl implements ProductService {
                 () -> new NoSuchElementException("Product not found with id: " + id));
     }
 
-    @Override
-    public Product createEntity(Product product) {
-        return productRepository.saveAndFlush(product);
-    }
 
     private static ProductResponse getProductResponse(Product product) {
         return ProductResponse.builder()
+                .id(product.getId())
                 .name(product.getName())
                 .condition(product.getCondition())
                 .actualPrice(product.getActualPrice())

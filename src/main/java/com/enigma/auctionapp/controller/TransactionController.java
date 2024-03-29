@@ -26,7 +26,7 @@ public class TransactionController {
                 .body(CommonResponse.builder()
                         .statusCode(HttpStatus.CREATED.value())
                         .message("Successfully Created New Transaction")
-                        .data(transactionRequest)
+                        .data(transactionResponse)
                         .build());
 
     }

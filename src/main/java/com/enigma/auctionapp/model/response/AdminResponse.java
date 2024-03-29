@@ -1,4 +1,5 @@
-package com.enigma.auctionapp.model.request;
+package com.enigma.auctionapp.model.response;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,8 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder(toBuilder = true)
-public class AdminRequest {
+@Builder(toBuilder = true)public class AdminResponse {
     private String id;
     private String name;
     private String mobilePhone;

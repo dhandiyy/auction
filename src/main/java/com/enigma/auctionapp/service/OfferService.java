@@ -11,4 +11,5 @@ public interface OfferService {
     OfferResponse updateCloseOffer(String id);
     Offer getByIdEntity(String id);
 
+
 }

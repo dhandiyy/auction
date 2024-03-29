@@ -5,6 +5,7 @@ import com.enigma.auctionapp.model.request.CustomerRequest;
 import com.enigma.auctionapp.model.response.CustomerResponse;
 import com.enigma.auctionapp.repository.CustomerRepository;
 import com.enigma.auctionapp.service.CustomerService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,11 +33,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
         customerRepository.save(customer);
 
-        return getBidderResponse(customer);
+        return getCustomerResponse(customer);
     }
 
-    private static CustomerResponse getBidderResponse(Customer customer) {
+    private static CustomerResponse getCustomerResponse(Customer customer) {
         return CustomerResponse.builder()
+                .id(customer.getId())
                 .firstName(customer.getFirstName())
                 .lastName(customer.getLastName())
                 .mobilePhone(customer.getMobilePhone())
@@ -46,25 +48,27 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer create(Customer customer) {
-        return customerRepository.save(customer);
+        customerRepository.create(customer);
+        return customer;
     }
 
     @Override
     public CustomerResponse getByIdDto(String id) {
-        Customer customer = customerRepository.findById(id).orElseThrow();
-        return getBidderResponse(customer);
+        Customer customer = this.getByIdEntity(id);
+        return getCustomerResponse(customer);
     }
 
     @Override
     public Customer getByIdEntity(String id) {
-        return customerRepository.findById(id).orElseThrow(
+        Customer customer = customerRepository.getByIdNative(id).orElseThrow(
                 () -> new NoSuchElementException("Customer not found with id: " + id));
+        return customer;
     }
 
     @Override
     public Page<CustomerResponse> getAll(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Customer> bidderPage = customerRepository.findAll(pageable);
+        Page<Customer> bidderPage = customerRepository.getAllNative(pageable);
         List<CustomerResponse> customerResponseList = new ArrayList<>();
 
         for (Customer customer : bidderPage){
@@ -78,5 +82,20 @@ public class CustomerServiceImpl implements CustomerService {
                             .build());
         }
         return new PageImpl<>(customerResponseList, pageable, bidderPage.getTotalElements());
+    }
+
+    @Transactional
+    @Override
+    public CustomerResponse update(CustomerRequest customerRequest) {
+        Customer customer = Customer.builder()
+                .id(customerRequest.getId())
+                .firstName(customerRequest.getFirstName())
+                .lastName(customerRequest.getLastName())
+                .emailAddress(customerRequest.getEmailAddress())
+                .mobilePhone(customerRequest.getMobilePhone())
+                .build();
+        customerRepository.update(customer);
+
+        return getCustomerResponse(customer);
     }
 }

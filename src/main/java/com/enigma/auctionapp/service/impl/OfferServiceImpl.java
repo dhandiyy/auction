@@ -15,12 +15,14 @@ import com.enigma.auctionapp.service.ProductService;
 import com.enigma.auctionapp.util.StatusOffer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -30,20 +32,23 @@ public class OfferServiceImpl implements OfferService {
     private final ProductService productService;
     private final CustomerService customerService;
 
+    @Transactional
     @Override
     public OfferResponse create(OfferRequest offerRequest) {
 
         Customer customer = customerService.getByIdEntity(offerRequest.getIdCustomer());
 
         Product product = Product.builder()
+                .id(UUID.randomUUID().toString())
                 .name(offerRequest.getProductName())
                 .condition(offerRequest.getCondition())
                 .actualPrice(offerRequest.getActualPrice())
                 .description(offerRequest.getDescription())
                 .build();
-        productService.createEntity(product);
+        productService.create(product);
 
         Offer offer = Offer.builder()
+                .id(UUID.randomUUID().toString())
                 .openBid(offerRequest.getOpenBid())
                 .multiple(offerRequest.getMultiple())
                 .openDate(LocalDateTime.now())
@@ -52,11 +57,16 @@ public class OfferServiceImpl implements OfferService {
                 .statusOffer(StatusOffer.OPEN)
                 .customer(customer)
                 .build();
-        offerRepository.saveAndFlush(offer);
+        offerRepository.createAndFlush(offer);
 
         product.setOffer(offer);
+        System.out.println(product.getOffer().getId());
+        productService.updateForSetOffer(product);
+
+
 
         return OfferResponse.builder()
+                .id(offer.getId())
                 .productName(product.getName())
                 .description(product.getDescription())
                 .condition(product.getCondition())

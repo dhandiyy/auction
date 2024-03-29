@@ -16,9 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -41,22 +41,30 @@ public class TransactionServiceImpl implements TransactionService {
                 .emailAddress(customer.getEmailAddress())
                 .build();
 
+        Optional<Transaction> lastTransaction = transactionRepository.findLastByApprovalStatusAndOfferIdNative(ApprovalStatus.APPROVED.name(), transactionRequest.getIdOffer());
+
         Transaction transaction = Transaction.builder()
+                .id(UUID.randomUUID().toString())
                 .createdAt(LocalDateTime.now())
                 .offerBid(transactionRequest.getOfferBid())
                 .customer(customer)
                 .offer(offer)
                 .approvalStatus(ApprovalStatus.APPROVED)
                 .build();
-        transactionRepository.save(transaction);
+        transactionRepository.create(transaction);
 
-        if(!offer.getTransactions().isEmpty()){
-            offer.getTransactions().sort(Comparator.comparing(Transaction::getCreatedAt));
-            Transaction lastTransaction = offer.getTransactions().get(offer.getTransactions().size()-1);
+        if(!lastTransaction.isEmpty()){
 
-
-            Boolean check = forOfferCheck(lastTransaction.getOfferBid(), transactionRequest.getOfferBid(), offer.getMultiple(), offer.getMultiple());
+            Boolean check = forOfferCheck(lastTransaction.get().getOfferBid(), transactionRequest.getOfferBid(), offer.getMultiple(), offer.getMultiple());
             if(!check){
+                transaction.setApprovalStatus(ApprovalStatus.REJECTED);
+            }else{
+                Transaction lastTransactionUpdate = lastTransaction.get();
+                lastTransactionUpdate.setApprovalStatus(ApprovalStatus.REJECTED);
+            }
+
+        }else{
+            if((transactionRequest.getOfferBid() - offer.getOpenBid())%offer.getMultiple()!=0 && transactionRequest.getOfferBid()<offer.getOpenBid()){
                 transaction.setApprovalStatus(ApprovalStatus.REJECTED);
             }
         }

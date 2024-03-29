@@ -12,6 +12,8 @@ public interface CustomerService {
     CustomerResponse getByIdDto (String id);
     Customer getByIdEntity(String id);
     Page<CustomerResponse> getAll (Integer page, Integer size);
+    CustomerResponse update (CustomerRequest customerRequest);
+
 
 
 
